@@ -1,6 +1,6 @@
 const request = require('request-promise'); // "Request" library
 const { client_id, client_secret } = require('../config/keys');
-module.useRefreshToken = async refresh_token => {
+const useRefreshToken = async refresh_token => {
   const authOptions = {
     url: 'https://accounts.spotify.com/api/token',
     method: 'POST',
@@ -20,4 +20,18 @@ module.useRefreshToken = async refresh_token => {
   });
 
   super_access_token = result.access_token;
+};
+const generateRandomString = length => {
+  let text = '';
+  const possible =
+    'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+
+  for (let i = 0; i < length; i++) {
+    text += possible.charAt(Math.floor(Math.random() * possible.length));
+  }
+  return text;
+};
+module.exports = {
+  generateRandomString,
+  useRefreshToken
 };

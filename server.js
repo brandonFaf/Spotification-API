@@ -3,20 +3,8 @@ const querystring = require('querystring');
 const express = require('express');
 const cookieParser = require('cookie-parser');
 const { client_id, client_secret, redirect_uri } = require('./config/keys');
-const { useRefreshToken } = require('./utils/helpers');
+const { useRefreshToken, generateRandomString } = require('./utils/helpers');
 // const { createUser } = require('./user');
-
-// eslint-disable-next-line arrow-parens
-const generateRandomString = length => {
-  let text = '';
-  const possible =
-    'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-
-  for (let i = 0; i < length; i++) {
-    text += possible.charAt(Math.floor(Math.random() * possible.length));
-  }
-  return text;
-};
 
 const stateKey = 'spotify_auth_state';
 
@@ -49,8 +37,6 @@ router.get('/callback', (req, res) => {
   const storedState = req.cookies ? req.cookies[stateKey] : null;
 
   if (state === null || state !== storedState) {
-    console.log('state', state);
-    console.log('storedState', storedState);
     res.redirect(
       `/#${querystring.stringify({
         error: 'state_mismatch'
@@ -83,7 +69,6 @@ router.get('/callback', (req, res) => {
         //   headers: { Authorization: `Bearer ${access_token}` },
         //   json: true
         // };
-        console.log(access_token, refresh_token);
         res.json({ access_token, refresh_token });
         // use the access token to access the Spotify Web API
         // request.get(options, (e, r, { id }) => {

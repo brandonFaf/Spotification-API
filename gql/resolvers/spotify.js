@@ -1,6 +1,7 @@
 /* eslint-disable no-undef */
 const axios = require('axios');
 const { useRefreshToken } = require('../../utils/helpers');
+const { masterRefreshToken } = require('../../config/keys');
 
 axios.interceptors.response.use(
   response => response,
@@ -17,13 +18,18 @@ axios.interceptors.response.use(
   }
 );
 
-const getPlaylistFromSpotify = async playlistId =>
-  axios.get(`https://api.spotify.com/v1/playlists/${playlistId}`, {
-    headers: {
-      Authorization: `Bearer ${super_access_token}`
+const getPlaylistFromSpotify = async (parent, args) => {
+  const data = await axios.get(
+    `https://api.spotify.com/v1/playlists/${args.id}`,
+    {
+      headers: {
+        Authorization: `Bearer ${super_access_token}`
+      }
     }
-  });
-const getTracksFromSpotify = async (href, access_token) => {
+  );
+  return data.data;
+};
+const getTracksFromSpotify = async href => {
   let joiner = '?';
   if (href.includes('?')) {
     joiner = '&';
@@ -32,7 +38,7 @@ const getTracksFromSpotify = async (href, access_token) => {
     `${href}${joiner}fields=items(added_at,added_by.id, track(name, id, artists(name)))`,
     {
       headers: {
-        Authorization: `Bearer ${access_token}`
+        Authorization: `Bearer ${super_access_token}`
       }
     }
   );
