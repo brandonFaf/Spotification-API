@@ -11,7 +11,7 @@
     "node": ">=10.0.0"
   },
   "scripts": {
-    "dev": "cross-env NODE_ENV=development DISABLE_LOGGING=false keystone dev",
+    "dev": "nodemon -L --exec cross-env NODE_ENV=development DISABLE_LOGGING=true node -r esm ./node_modules/.bin/keystone dev",
     "build": "cross-env NODE_ENV=production keystone build",
     "start": "cross-env NODE_ENV=production keystone start"
   },
@@ -23,7 +23,14 @@
     "@keystonejs/auth-password": "^5.0.1",
     "@keystonejs/fields": "^6.0.0",
     "@keystonejs/keystone": "^5.3.0",
+    "axios": "^0.19.2",
+    "cookie-parser": "^1.4.4",
     "cross-env": "^5.2.0",
-    "dotenv": "^8.2.0"
+    "dotenv": "^8.2.0",
+    "request": "^2.88.2",
+    "request-promise": "^4.2.5"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.2"
   }
 }
