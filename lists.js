@@ -23,10 +23,11 @@ const access = { userIsAdmin, userOwnsItem, userIsAdminOrOwner };
 const createLists = keystone => {
   keystone.createList('Admin', {
     fields: {
-      name: { type: Text },
+      name: { type: Text, isRequired: true },
       email: {
         type: Text,
-        isUnique: true
+        isUnique: true,
+        isRequired: true
       },
       isAdmin: { type: Checkbox },
       password: {
@@ -43,7 +44,7 @@ const createLists = keystone => {
   });
   keystone.createList('User', {
     fields: {
-      name: { type: Text },
+      name: { type: Text, isRequired: true },
       email: {
         type: Text,
         isUnique: true
@@ -63,11 +64,15 @@ const createLists = keystone => {
   });
   keystone.createList('Playlist', {
     fields: {
-      snapshotId: { type: Text },
-      name: { type: Text },
+      snapshotId: { type: Text, isRequired: true },
+      name: { type: Text, isRequired: true },
       users: { type: Relationship, ref: 'User', many: true },
-      spotifyId: { type: Text },
-      lastUpdated: { type: DateTime, format: 'YYYY-MM-DDThh:mm:ssZ' }
+      spotifyId: { type: Text, isRequired: true },
+      lastUpdated: {
+        type: DateTime,
+        format: 'YYYY-MM-DDThh:mm:ssZ',
+        isRequired: true
+      }
     }
   });
 };
